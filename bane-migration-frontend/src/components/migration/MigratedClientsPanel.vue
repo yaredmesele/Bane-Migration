@@ -50,11 +50,14 @@ function handleSearchInput(value: string) {
 
       <v-text-field
         :model-value="searchTerm"
-        class="mb-4"
+        class="mb-4 search-input"
         density="comfortable"
         variant="outlined"
         prepend-inner-icon="mdi-magnify"
         placeholder="Search migrated clients"
+        color="primary"
+        rounded="pill"
+        hide-details
         clearable
         @update:model-value="handleSearchInput"
       />
@@ -71,3 +74,25 @@ function handleSearchInput(value: string) {
     </v-card-text>
   </v-card>
 </template>
+
+<style scoped>
+.search-input :deep(.v-field) {
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  background-color: #ffffff;
+}
+
+.search-input :deep(.v-field__outline) {
+  border-radius: 999px;
+  border-width: 1px;
+}
+
+.search-input :deep(.v-field.v-field--focused .v-field__outline) {
+  border-color: rgb(19, 182, 236);
+  box-shadow: 0 0 0 3px rgba(19, 182, 236, 0.12);
+}
+
+.search-input :deep(input) {
+  box-shadow: none !important;
+  background: transparent;
+}
+</style>
