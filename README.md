@@ -41,7 +41,7 @@ npm run dev
 ```
 
 - Configure `VITE_API_BASE_URL` in `.env` (defaults to `http://localhost:8080/api`)
-- Vite dev server available at `http://localhost:5173`
+- Vite dev server available at `http://localhost:3000`
 
 Refer to `bane-migration-frontend/README.md` for tooling details, project structure, and additional scripts.
 
