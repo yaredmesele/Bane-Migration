@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { ref, watch } from "vue";
 import MigratedClientsTable from "./MigratedClientsTable.vue";
 import type { Client } from "@/types/client";
+import { formatDateTime } from "@/utils/formatters";
 
 defineProps<{
   clients: Client[];
@@ -18,9 +20,27 @@ const emit = defineEmits<{
   (event: "update:search", value: string): void;
 }>();
 
+const detailsDialogOpen = ref(false);
+const selectedClient = ref<Client | null>(null);
+
 function handleSearchInput(value: string) {
   emit("update:search", value);
 }
+
+function handleViewDetails(client: Client) {
+  selectedClient.value = client;
+  detailsDialogOpen.value = true;
+}
+
+function closeDetailsDialog() {
+  detailsDialogOpen.value = false;
+}
+
+watch(detailsDialogOpen, (isOpen) => {
+  if (!isOpen) {
+    selectedClient.value = null;
+  }
+});
 </script>
 
 <template>
@@ -70,8 +90,66 @@ function handleSearchInput(value: string) {
         :loading="loading"
         @update:items-per-page="emit('update:items-per-page', $event)"
         @update:page="emit('update:page', $event)"
+        @view-details="handleViewDetails"
       />
     </v-card-text>
+
+    <v-dialog v-model="detailsDialogOpen" max-width="460">
+      <v-card>
+        <v-card-title class="d-flex align-center justify-space-between">
+          <span class="text-h6 font-weight-bold">Client Details</span>
+          <v-btn icon variant="text" color="default" @click="closeDetailsDialog">
+            <v-icon icon="mdi-close" />
+          </v-btn>
+        </v-card-title>
+
+        <v-divider />
+
+        <v-card-text v-if="selectedClient" class="pa-6">
+          <v-list density="compact" lines="two">
+            <v-list-item>
+              <v-list-item-subtitle>Full Name</v-list-item-subtitle>
+              <v-list-item-title class="text-body-1">
+                {{ selectedClient.fullName }}
+              </v-list-item-title>
+            </v-list-item>
+
+            <v-divider class="my-2" />
+
+            <v-list-item>
+              <v-list-item-subtitle>Email</v-list-item-subtitle>
+              <v-list-item-title class="text-body-1">
+                {{ selectedClient.email }}
+              </v-list-item-title>
+            </v-list-item>
+
+            <v-divider class="my-2" />
+
+            <v-list-item>
+              <v-list-item-subtitle>Client ID</v-list-item-subtitle>
+              <v-list-item-title class="text-body-1">
+                {{ selectedClient.id }}
+              </v-list-item-title>
+            </v-list-item>
+
+            <v-divider class="my-2" />
+
+            <v-list-item>
+              <v-list-item-subtitle>Migrated At</v-list-item-subtitle>
+              <v-list-item-title class="text-body-1">
+                {{ formatDateTime(selectedClient.migratedAt, "Unavailable") }}
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-card-text>
+
+        <v-card-actions class="justify-end px-6 pb-4">
+          <v-btn color="primary" variant="tonal" @click="closeDetailsDialog">
+            Close
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-card>
 </template>
 

@@ -20,9 +20,7 @@ declare module 'vue-router/auto-routes' {
   export interface RouteNamedMap {
     '/': RouteRecordInfo<'/', '/', Record<never, never>, Record<never, never>>,
     '/legacy': RouteRecordInfo<'/legacy', '/legacy', Record<never, never>, Record<never, never>>,
-    '/legacy-clients': RouteRecordInfo<'/legacy-clients', '/legacy-clients', Record<never, never>, Record<never, never>>,
     '/migrated': RouteRecordInfo<'/migrated', '/migrated', Record<never, never>, Record<never, never>>,
-    '/migrated-clients': RouteRecordInfo<'/migrated-clients', '/migrated-clients', Record<never, never>, Record<never, never>>,
   }
 
   /**
@@ -44,16 +42,8 @@ declare module 'vue-router/auto-routes' {
       routes: '/legacy'
       views: never
     }
-    'src/pages/legacy-clients.vue': {
-      routes: '/legacy-clients'
-      views: never
-    }
     'src/pages/migrated.vue': {
       routes: '/migrated'
-      views: never
-    }
-    'src/pages/migrated-clients.vue': {
-      routes: '/migrated-clients'
       views: never
     }
   }

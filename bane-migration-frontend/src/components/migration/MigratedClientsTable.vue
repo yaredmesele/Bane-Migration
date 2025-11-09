@@ -13,6 +13,7 @@ defineProps<{
 const emit = defineEmits<{
   (event: 'update:page', value: number): void
   (event: 'update:items-per-page', value: number): void
+  (event: 'view-details', value: Client): void
 }>()
 
 const headers = [
@@ -29,6 +30,10 @@ function handlePageChange(value: number) {
 
 function handleItemsPerPageChange(value: number) {
   emit('update:items-per-page', value)
+}
+
+function handleDetailsClick(client: Client) {
+  emit('view-details', client)
 }
 </script>
 
@@ -76,8 +81,8 @@ function handleItemsPerPageChange(value: number) {
       </v-chip>
     </template>
 
-    <template #item.actions>
-      <v-btn color="primary" variant="text" size="small">
+    <template #item.actions="{ item }">
+      <v-btn color="primary" variant="text" size="small" @click.stop="handleDetailsClick(item)">
         <v-icon icon="mdi-eye" start />
         Details
       </v-btn>
